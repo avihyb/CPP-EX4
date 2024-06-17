@@ -2,6 +2,7 @@
 #define TREE_HPP
 
 #include "node.hpp"
+#include <cstddef>
 #include <vector>
 #include <queue>
 #include <stdexcept>
@@ -21,18 +22,28 @@ class Tree
 private:
     Node<T> *root;
     bool is_binary_tree;
+    int k;
     std::vector<Node<T> *> pre_order_nodes;
     std::vector<Node<T> *> post_order_nodes;
     std::vector<Node<T> *> in_order_nodes;
     std::vector<Node<T> *> bfs_nodes;
     std::vector<Node<T> *> dfs_nodes;
+    std::vector<Node<T> *> heap_nodes;
+
 
 public:
-    Tree() : root(nullptr), is_binary_tree(K == 2) {}
+    Tree() : root(nullptr), is_binary_tree(K == 2) {
+        k = K;
+    }
 
     ~Tree()
     {
         delete_tree(root);
+    }
+
+    int get_k() const
+    {
+        return k;
     }
 
     void add_root(const Node<T> &node)
@@ -46,19 +57,24 @@ public:
 
     void add_sub_node(const Node<T> &parent, const Node<T> &child)
     {
+        
         if (root == nullptr)
         {
             throw std::runtime_error("Root node not found.");
         }
-        if (parent.children.size() >= K)
+        
+        Node<T> *parent_ptr = find_node(root, parent.get_value());
+
+        if (parent_ptr->children.size() >= (size_t)this->k)
         {
             throw std::runtime_error("Node has reached the maximum number of children.");
         }
-        Node<T> *parent_ptr = find_node(root, parent.get_value());
+
         if (parent_ptr == nullptr)
         {
             throw std::runtime_error("Parent node not found.");
         }
+        //std::cout << "children= " << parent_ptr->children.size() << "Tree K= " << k << std::endl;
         parent_ptr->add_child(child);
     }
 
@@ -151,6 +167,19 @@ public:
         return dfs_nodes.end();
     }
 
+        typename std::vector<Node<T> *>::iterator begin_heap()
+    {
+        heap_nodes.clear();
+        myHeap(root, heap_nodes);
+        return heap_nodes.begin();
+    }
+
+    typename std::vector<Node<T> *>::iterator end_heap()
+    {
+        return heap_nodes.end();
+    }
+
+
 private:
     void pre_order_helper(Node<T> *node, std::vector<Node<T> *> &result)
     {
@@ -174,27 +203,20 @@ private:
         result.push_back(node);
     }
 
-    void in_order_helper(Node<T>* node, std::vector<Node<T>*>& result) {
-        if (node == nullptr) return;
-        if (!is_binary_tree || node->get_children().size() == 0) {
-            for (auto child : node->get_children()) {
-                in_order_helper(child, result);
-                result.push_back(child);
-            }
-        } else if (node->get_children().size() == 1) {
-            in_order_helper(node->get_children()[0], result);
-            result.push_back(node);
-            for (auto child : node->get_children()) {
-                in_order_helper(child, result);
-                result.push_back(child);
-            }
-        } else if (node->get_children().size() == 2) {
-            in_order_helper(node->get_children()[0], result);
-            result.push_back(node);
-            in_order_helper(node->get_children()[1], result);
-            result.push_back(node);
-        }
+     void in_order_helper(Node<T> *node, std::vector<Node<T> *> &result) {
+    if (node == nullptr)
+        return;
+
+    auto children = node->get_children();
+    if (children.size() > 0) {
+        in_order_helper(children[0], result); // Left child
     }
+    result.push_back(node); // Root
+    if (children.size() > 1) {
+        in_order_helper(children[1], result); // Right child
+    }
+}
+
 
     void bfs_helper(Node<T> *node, std::vector<Node<T> *> &result)
     {
@@ -251,6 +273,18 @@ private:
         return nullptr;
     }
 
+
+        void myHeap(Node<T> *node, std::vector<Node<T> *> &result)
+    {
+        if (node == nullptr)
+            return;
+        dfs_helper(node, result);
+        auto comp = [](Node<T> *lhs, Node<T> *rhs) { return lhs->get_value() > rhs->get_value(); };
+        std::make_heap(result.begin(), result.end(), comp);
+        std::sort_heap(result.begin(), result.end(), comp);
+    }
+
+
     friend std::ostream &operator<<(std::ostream &os, Tree<T, K> &tree)
     {
         Node<T> *root = tree.getRoot();
@@ -287,6 +321,7 @@ private:
             tree.drawTree(window, font);
             window.display();
         }
+        
     return os;
     
     }

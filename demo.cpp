@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include "node.hpp"
-#include "tree.hpp" // Include Tree.hpp instead of Tree.cpp
+#include "tree.hpp" 
 #include "complex.hpp"
 
 using namespace std;
@@ -22,9 +22,10 @@ int main()
     tree.add_sub_node(n1, n3);
     tree.add_sub_node(n1, n4);
     tree.add_sub_node(n2, n5);
+    //tree.add_sub_node(root_node, n3); // This should throw an exception.
     cout << tree;
-    tree.add_sub_node(n5, n1);
-    cout << tree;
+    // tree.add_sub_node(n5, n1);
+    // cout << tree;
 
     Complex c1(1, 2);
     Complex c2(3, 4);

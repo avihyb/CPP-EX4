@@ -15,7 +15,7 @@ demo: demo.o tree.o node.o
 test: test.o testCounter.o tree.o node.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
-valgrind: demo test
+valgrind: demo
 	valgrind $(VALGRIND_FLAGS) ./demo
 	
 

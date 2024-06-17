@@ -10,6 +10,7 @@ public:
     std::vector<Node<T>*> children;
 
     Node(T val) : value(val) {}
+    ~Node() {}
 
     T get_value() const { return value; }
 

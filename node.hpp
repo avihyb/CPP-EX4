@@ -1,19 +1,23 @@
 #ifndef NODE_HPP
 #define NODE_HPP
 
-#include <iostream>
-#include <string>
+#include <vector>
 
-// Define the Node class template
 template <typename T>
 class Node {
 public:
-    T data;
-    Node* left;  // Pointer to the left child
-    Node* right; // Pointer to the right child
+    T value;
+    std::vector<Node<T>*> children;
 
-    // Constructor to initialize the data and pointers
-    Node(T value) : data(value), left(nullptr), right(nullptr) {}
+    Node(T val) : value(val) {}
+
+    T get_value() const { return value; }
+
+    void add_child(const Node<T>& child) {
+        children.push_back(new Node<T>(child));
+    }
+
+    std::vector<Node<T>*> get_children() const { return children; }
 };
 
 #endif // NODE_HPP

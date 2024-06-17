@@ -1,70 +1,105 @@
-/**
- * Demo app for Ex4
- */
 #include <iostream>
 #include <string>
 #include "node.hpp"
-#include "tree.hpp"
+#include "tree.hpp" // Include Tree.hpp instead of Tree.cpp
+#include "complex.hpp"
 
 using namespace std;
-
 int main()
 {
-
-    Node<string> root_node = Node("root");
-    Tree tree;
+    // Binary tree
+    Node<double> root_node = Node<double>(1.1);
+    Tree<double> tree; // Binary tree that contains doubles.
     tree.add_root(root_node);
-    Node<int> n1 = Node(1);
-    Node<string> n2 = Node("n2");
-    Node<double> n3 = Node(12.35);
-    Node<double> n4 = Node(1 / 4);
-    Node<string> n5 = Node("n5");
-    Node<string> n6 = Node("n6");
-    Node<string> n7 = Node("n7");
-
+    Node<double> n1 = Node<double>(1.2);
+    Node<double> n2 = Node<double>(1.3);
+    Node<double> n3 = Node<double>(1.4);
+    Node<double> n4 = Node<double>(1.5);
+    Node<double> n5 = Node<double>(1.6);
+    
     tree.add_sub_node(root_node, n1);
     tree.add_sub_node(root_node, n2);
-    tree.add_sub_node(root_node, n3);
+    tree.add_sub_node(n1, n3);
     tree.add_sub_node(n1, n4);
-    tree.add_sub_node(n1, n5);
-    tree.add_sub_node(n2, n6);
-    tree.add_sub_node(n2, n7);
-    // The tree should look like:
-    /**
-     * root
-     * |__1
-     * |  |__0.25
-     * |  |__n5
-     * |__n2
-     * |  |__n6
-     * |  |__n7
-     * |__12.35
-     */
+    tree.add_sub_node(n2, n5);
+    cout << tree;
+    tree.add_sub_node(n5, n1);
+    cout << tree;
 
-    for (auto node = tree.begin_pre_order(); node != tree.end_pre_order(); ++node)
-    {
-        cout << node->get_value() << endl;
-    } // prints: root, 1, 0.25, n5, n2, n6, n7, 12.35
+    Complex c1(1, 2);
+    Complex c2(3, 4);
+    Tree<Complex> tree2;
+    Node<Complex> complexRoot = Node<Complex>(c1);
+    tree2.add_root(complexRoot);
+    Node<Complex> n12 = Node<Complex>(c2);
+    tree2.add_sub_node(complexRoot, n12);
+    cout << tree2;
 
-    for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node)
-    {
-        cout << node->get_value() << endl;
-    } // prints: 0.25, n5, 1, n6, n7, n2, 12.35, root
+    // Print various traversals
+    cout << "Pre-Order Traversal:" << endl;
+    for (auto node = tree.begin_pre_order(); node != tree.end_pre_order(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
 
-    for (auto node = tree.begin_in_order(); node != tree.end_in_order(); ++node)
-    {
-        cout << node->get_value() << endl;
-    } // prints: 0.25, 1, n5, root, n6, n2, n7, 12.35
+    cout << "Post-Order Traversal:" << endl;
+    for (auto node = tree.begin_post_order(); node != tree.end_post_order(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
 
-    for (auto node = tree.begin_bfs_scan(); node != tree.end_bfs_scan(); ++node)
-    {
-        cout << node->get_value() << endl;
-    } // prints: root, 1, n2, 12.35, 0.25, n5, n6, n7
+    cout << "In-Order Traversal:" << endl;
+    for (auto node = tree.begin_in_order(); node != tree.end_in_order(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
 
-    for (auto node : tree)
-    {
-        cout << node.get_value() << endl;
-    } // same as BFS: root, 1, n2, 12.35, 0.25, n5, n6, n7
+    cout << "BFS Traversal:" << endl;
+    for (auto node = tree.begin_bfs_scan(); node != tree.end_bfs_scan(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
 
-    cout << tree; // Should print the graph using GUI.
+    cout << "DFS Traversal:" << endl;
+    for (auto node = tree.begin_dfs_scan(); node != tree.end_dfs_scan(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
+
+    // 3-ary tree
+    Tree<int, 3> three_ary_tree; // 3-ary tree.
+    Node<int> int_root_node = Node<int>(1);
+    three_ary_tree.add_root(int_root_node);
+
+    Node<int> int_n1 = Node<int>(2);
+    Node<int> int_n2 = Node<int>(3);
+    Node<int> int_n3 = Node<int>(4);
+    Node<int> int_n4 = Node<int>(5);
+    Node<int> int_n5 = Node<int>(6);
+
+    three_ary_tree.add_sub_node(int_root_node, int_n1);
+    three_ary_tree.add_sub_node(int_root_node, int_n2);
+    three_ary_tree.add_sub_node(int_root_node, int_n3);
+    three_ary_tree.add_sub_node(int_n1, int_n4);
+    three_ary_tree.add_sub_node(int_n2, int_n5);
+
+    // Print 3-ary tree DFS traversal
+    cout << "3-ary Tree DFS Traversal:" << endl;
+    for (auto node = three_ary_tree.begin_dfs_scan(); node != three_ary_tree.end_dfs_scan(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
+
+    return 0;
 }
+
+// The binary tree should look like:
+    /**
+     *       root = 1
+     *     /   |   \
+     *    2    3    4
+     *   /      \
+     *  5        6
+     */
+// The treeary tree should look like:
+    /**
+     *     root = 1.1
+     *     /       \
+     *    1.2      1.3
+     *   /  \      /
+     *  1.4  1.5  1.6
+     */

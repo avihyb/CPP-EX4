@@ -14,15 +14,18 @@
 #include <map>
 #include <iomanip> 
 
-const float NODE_RADIUS = 50.0f;
+const float NODE_RADIUS = 50.0f; // constant for the radius of the nodes (GUI)
 
-template <typename T, int K = 2>
+template <typename T, int K = 2> // by default, K is 2 (Binary tree)
 class Tree
 {
 private:
     Node<T> *root;
     bool is_binary_tree;
     int k;
+    /*
+    * The following vectors are used to store the nodes in the order of traversal.
+    */
     std::vector<Node<T> *> pre_order_nodes;
     std::vector<Node<T> *> post_order_nodes;
     std::vector<Node<T> *> in_order_nodes;
@@ -32,10 +35,11 @@ private:
 
 
 public:
+    // Constructor
     Tree() : root(nullptr), is_binary_tree(K == 2) {
         k = K;
     }
-
+    // Destructor
     ~Tree()
     {
         delete_tree(root);

@@ -34,6 +34,7 @@ int main()
     tree2.add_root(complexRoot);
     Node<Complex> n12 = Node<Complex>(c2);
     tree2.add_sub_node(complexRoot, n12);
+    
     cout << tree2;
 
     // Print various traversals
@@ -62,6 +63,11 @@ int main()
         cout << (*node)->get_value() << endl;
     }
 
+    cout << "myHeap Traversal:" << endl;
+    for (auto node = tree.begin_heap(); node != tree.end_heap(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
+
     // 3-ary tree
     Tree<int, 3> three_ary_tree; // 3-ary tree.
     Node<int> int_root_node = Node<int>(1);
@@ -84,6 +90,8 @@ int main()
     for (auto node = three_ary_tree.begin_dfs_scan(); node != three_ary_tree.end_dfs_scan(); ++node) {
         cout << (*node)->get_value() << endl;
     }
+
+
 
     return 0;
 }

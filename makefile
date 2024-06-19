@@ -1,3 +1,11 @@
+# Functional Makefile for the project
+# Containing: all, test, valgrind, clean
+#			- all: compiles the demo and runs it
+#			- test: compiles the test and runs it
+#			- valgrind: runs the demo with valgrind
+#			- clean: removes all object files and executables
+
+
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra -Werror -I.
 GUIFLAGS = -lsfml-graphics -lsfml-window -lsfml-system
@@ -14,6 +22,7 @@ demo: demo.o tree.o node.o
 
 test: test.o testCounter.o tree.o node.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
+	./test
 
 valgrind: demo
 	valgrind $(VALGRIND_FLAGS) ./demo

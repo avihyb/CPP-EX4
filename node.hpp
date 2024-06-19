@@ -2,7 +2,10 @@
 #define NODE_HPP
 
 #include <vector>
+/*
+Node class that represents a node in a tree.
 
+*/
 template <typename T>
 class Node {
 public:

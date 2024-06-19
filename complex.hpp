@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <cmath>
-
+/*
+    Complex class that represents a complex number.
+    To be used in the tree class.
+*/
 class Complex{
     private:
         double real;

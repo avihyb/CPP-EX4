@@ -91,6 +91,58 @@ int main()
         cout << (*node)->get_value() << endl;
     }
 
+    // Complex tree - Iterator
+
+    Tree<Complex> complex_tree;
+    Node<Complex> complex_root_node = Node<Complex>(Complex(1, 2));
+    complex_tree.add_root(complex_root_node);
+    Node<Complex> complex_n1 = Node<Complex>(Complex(3, 4));
+    complex_tree.add_sub_node(complex_root_node, complex_n1);
+    Node<Complex> complex_n2 = Node<Complex>(Complex(5, 6));
+    complex_tree.add_sub_node(complex_root_node, complex_n2);
+    Node<Complex> complex_n3 = Node<Complex>(Complex(7, 8));
+    complex_tree.add_sub_node(complex_n1, complex_n3);
+    Node<Complex> complex_n4 = Node<Complex>(Complex(9, 10));
+    complex_tree.add_sub_node(complex_n1, complex_n4);
+    Node<Complex> complex_n5 = Node<Complex>(Complex(11, 12));
+    complex_tree.add_sub_node(complex_n2, complex_n5);
+
+    // Complex Tree GUI Launch:
+    cout << complex_tree;
+
+    cout << "Complex Tree DFS Traversal:" << endl;
+    for (auto node = complex_tree.begin_dfs_scan(); node != complex_tree.end_dfs_scan(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
+
+    cout << "Complex Tree BFS Traversal:" << endl;
+    for (auto node = complex_tree.begin_bfs_scan(); node != complex_tree.end_bfs_scan(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }   
+
+    cout << "Complex Tree Pre-Order Traversal:" << endl;
+    for (auto node = complex_tree.begin_pre_order(); node != complex_tree.end_pre_order(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
+
+    cout << "Complex Tree Post-Order Traversal:" << endl;
+    for (auto node = complex_tree.begin_post_order(); node != complex_tree.end_post_order(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
+
+    cout << "Complex Tree In-Order Traversal:" << endl;
+    for (auto node = complex_tree.begin_in_order(); node != complex_tree.end_in_order(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
+
+    cout << "Complex Tree Heap Traversal:" << endl;
+    for (auto node = complex_tree.begin_heap(); node != complex_tree.end_heap(); ++node) {
+        cout << (*node)->get_value() << endl;
+    }
+
+
+
+
 
 
     return 0;

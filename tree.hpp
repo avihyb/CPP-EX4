@@ -14,6 +14,18 @@
 #include <map>
 #include <iomanip> 
 
+/*
+    Tree: A class that represents a tree data structure. 
+    The tree can be of any degree, but the default is a binary tree.
+    The tree can be traversed in pre-order, post-order, in-order, breadth-first search, and depth-first search.
+    The tree can be visualized using the SFML library.
+    The tree supports different types of values, and objects as nodes (Complex Numbers Class).
+
+    SFML: Simple and Fast Multimedia Library (SFML) is a cross-platform software development library designed to provide a simple application programming interface (API) to various multimedia components in computers.
+    SFML provides a simple interface to the various components of your PC, to ease the development of games and multimedia applications. It is composed of five modules: system, window, graphics, audio and network.
+    © SFML Documentation: https://www.sfml-dev.org/documentation/2.5.1/
+*/
+
 const float NODE_RADIUS = 50.0f; // constant for the radius of the nodes (GUI)
 
 template <typename T, int K = 2> // by default, K is 2 (Binary tree)
@@ -183,7 +195,13 @@ public:
         return heap_nodes.end();
     }
 
+    
 
+/*
+    Helper functions for the tree traversal.
+    They store the nodes in the order of traversal.
+
+*/
 private:
     void pre_order_helper(Node<T> *node, std::vector<Node<T> *> &result)
     {
@@ -285,10 +303,12 @@ private:
         dfs_helper(node, result);
         auto comp = [](Node<T> *lhs, Node<T> *rhs) { return lhs->get_value() > rhs->get_value(); };
         std::make_heap(result.begin(), result.end(), comp);
-        std::sort_heap(result.begin(), result.end(), comp);
+        
     }
 
-
+    /*
+    Stream operator: launches the GUI to visualize the tree.
+    */
     friend std::ostream &operator<<(std::ostream &os, Tree<T, K> &tree)
     {
         Node<T> *root = tree.getRoot();
@@ -301,17 +321,19 @@ private:
        
         os << "Launching GUI..." << std::endl;
        
-
+        // Font initialization
         sf::Font font;
         if (!font.loadFromFile("arial.ttf")) {
             std::cerr << "Failed to load font file 'arial.ttf'" << std::endl;
             return os;
         }
+
+        // Window initialization
         sf::RenderWindow window(sf::VideoMode(700, 700), "EX4");
         window.setVerticalSyncEnabled(true); // Attempt to enable vertical sync
         
         
-
+        // Main loop of GUI
         while (window.isOpen())
         {
             sf::Event event;
@@ -322,13 +344,18 @@ private:
             }
 
             window.clear(sf::Color::Cyan);
-            tree.drawTree(window, font);
+            tree.drawTree(window, font); // Main function to draw the tree
             window.display();
         }
         
     return os;
     
     }
+
+    /*
+    drawTree function: draws the tree on the window.
+    It calls the helper functions to calculate the positions of the nodes and draw them.
+    */
 void drawTree(sf::RenderWindow &window, sf::Font &font)
 {
     if (this->root == nullptr) return;
@@ -344,7 +371,11 @@ void drawTree(sf::RenderWindow &window, sf::Font &font)
         draw_node(window, entry.first, entry.second, font, positions);
     }
 }
-
+/*
+    calculate_positions function: calculates the positions of the nodes in the tree.
+    It uses a map to store the positions of each node.
+    it calculates the positions recursively by traversing the tree.
+*/
 void calculate_positions(Node<T> *node, std::map<Node<T>*, sf::Vector2f> &positions, float x, float y, float horizontal_spacing)
 {
     if (node == nullptr) return;
@@ -359,7 +390,10 @@ void calculate_positions(Node<T> *node, std::map<Node<T>*, sf::Vector2f> &positi
         child_x += horizontal_spacing;
     }
 }
-
+/*
+    draw_node function: draws the node on the window.
+    It uses the SFML library to draw the node and the text.
+*/
 void draw_node(sf::RenderWindow &window, Node<T> *node, sf::Vector2f position, sf::Font &font, const std::map<Node<T>*, sf::Vector2f> &positions)
 {
     sf::CircleShape circle(NODE_RADIUS);
@@ -387,6 +421,9 @@ void draw_node(sf::RenderWindow &window, Node<T> *node, sf::Vector2f position, s
     window.draw(circle);
     window.draw(text);
 
+    // Draw lines to children
+    // The lines are drawn using the positions map which contains the positions of each node.
+    
     for (auto child : node->get_children())
     {
         sf::Vertex line[] =
